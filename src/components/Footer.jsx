@@ -18,7 +18,7 @@ const Footer = () => {
                 />
 
                 <h2>Ujjwal Jamuar</h2>
-                <p>Motivation is temporary, but discipline last forever.</p>
+                <p>Build what excites you, A roadmap is optional.</p>
             </div>
 
             <aside>
