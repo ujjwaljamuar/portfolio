@@ -31,7 +31,7 @@ const Contact = () => {
                 message,
             });
 
-            await axios.post("https://resend-mailer-backend.vercel.app/mailportfolio", { data });
+            await axios.post("https://portfolio-backend-ujjwaljamuar.vercel.app/mailportfolio", { data });
             // console.log(data);
 
             setName("");
