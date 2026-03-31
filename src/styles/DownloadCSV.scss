@@ -1,4 +1,4 @@
-@import "./statics.scss";
+@use "./statics.scss" as *;
 
 button {
     background-color: transparent;

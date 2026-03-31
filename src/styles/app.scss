@@ -1,17 +1,16 @@
+@use "statics" as *;
+@use "animations";
+@use "header";
+@use "home";
+@use "work";
+@use "timeline";
+@use "services";
+@use "testimonial";
+@use "contact";
+@use "footer";
+@use "mediaquery";
+
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&family=Roboto:wght@100;300;400;500;700;900&display=swap");
-
-@import "statics";
-@import "animations";
-@import "header";
-@import "home";
-@import "work";
-@import "timeline";
-@import "services";
-@import "testimonial";
-@import "contact";
-@import "footer";
-@import "mediaquery";
-
 * {
     margin: 0%;
     padding: 0%;
