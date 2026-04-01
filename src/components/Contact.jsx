@@ -9,6 +9,8 @@ import { db } from "../firebase";
 import DownloadCSV from "./DownloadCSV";
 import axios from "axios";
 
+import { BACKEND_BASE_URL } from "../config/constants";
+
 const Contact = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -31,8 +33,7 @@ const Contact = () => {
                 message,
             });
 
-            await axios.post("https://portfolio-backend-ujjwaljamuar.vercel.app/mailportfolio", { data });
-            // console.log(data);
+            await axios.post(`${BACKEND_BASE_URL}/mailportfolio`, { data });
 
             setName("");
             setEmail("");
