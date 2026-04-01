@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import { AiOutlineCloudDownload } from "react-icons/ai";
 import { IoMdDownload } from "react-icons/io";
-import "firebase/compat/firestore";
-import { collection, getDocs, getFirestore } from "firebase/firestore";
 
 import "../styles/DownloadCSV.scss";
-
-// Initialize Firebase
-// Replace the Firebase configuration with your own
-
-const firestore = getFirestore();
+import axios from "axios";
+import { BACKEND_BASE_URL } from "../config/constants";
 
 const DownloadCSV = () => {
     const [csvData, setCSVData] = useState("");
@@ -24,17 +19,9 @@ const DownloadCSV = () => {
     };
 
     const fetchDataFromFirestore = async () => {
-        try {
-            // const snapshot = await firestore.collection("contacts").get();
-            const contacts = collection(firestore, "contacts");
-            const snapshot = await getDocs(contacts);
-            let csvContent = "";
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                const csvRow = Object.values(data).join(",");
-                csvContent += `${csvRow}\r\n`;
-            });
-            setCSVData(csvContent);
+        try {            
+            const { data } = await axios.get(`${BACKEND_BASE_URL}/contacts/csv`);
+            setCSVData(data.csvData)
         } catch (error) {
             console.error("Error fetching data: ", error);
         }

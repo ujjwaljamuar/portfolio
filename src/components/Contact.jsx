@@ -1,11 +1,8 @@
 import { useState } from "react";
-// import { Resend } from "resend";
 
 import vg from "../assets/vg.png";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "../firebase";
 import DownloadCSV from "./DownloadCSV";
 import axios from "axios";
 
@@ -27,11 +24,7 @@ const Contact = () => {
         e.preventDefault();
         setDisableBtn(true);
         try {
-            await addDoc(collection(db, "contacts"), {
-                name,
-                email,
-                message,
-            });
+            await axios.post(`${BACKEND_BASE_URL}/contacts`, { data });
 
             await axios.post(`${BACKEND_BASE_URL}/mailportfolio`, { data });
 
