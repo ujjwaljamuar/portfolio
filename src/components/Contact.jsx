@@ -24,9 +24,7 @@ const Contact = () => {
         e.preventDefault();
         setDisableBtn(true);
         try {
-            await axios.post(`${BACKEND_BASE_URL}/contacts`, { data });
-
-            await axios.post(`${BACKEND_BASE_URL}/mailportfolio`, { data });
+            await axios.post(`${BACKEND_BASE_URL}/contacts/save`, { data });
 
             setName("");
             setEmail("");
