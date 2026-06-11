@@ -8,6 +8,38 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import BlogList from "./pages/BlogList";
+import BlogDetail from "./pages/BlogDetail";
+import AdminLogin from "./pages/AdminLogin";
+import AdminBlogs from "./pages/AdminBlogs";
+import BlogEditor from "./pages/BlogEditor";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const PortfolioHome = ({ menuOpen, setMenuOpen, ratio }) => (
+  <>
+    <HeaderPhone menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+    <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+    <Home ratio={ratio} />
+    <Work />
+    <Timeline />
+    <Services />
+    <Testimonial />
+    <Contact />
+    <Footer />
+  </>
+);
+
+const PublicPage = ({ children, menuOpen, setMenuOpen }) => (
+  <>
+    <HeaderPhone menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+    <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+    {children}
+    <Footer />
+  </>
+);
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -25,18 +57,44 @@ function App() {
   }, [ratio]);
 
   return ratio < 2.2 ? (
-    <>
-      <HeaderPhone menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <Home ratio={ratio} />
-      <Work />
-      <Timeline />
-      <Services />
-      <Testimonial />
-      <Contact />
-      <Footer />
+    <BrowserRouter basename={basename}>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <PortfolioHome
+              menuOpen={menuOpen}
+              setMenuOpen={setMenuOpen}
+              ratio={ratio}
+            />
+          }
+        />
+        <Route
+          path="/blogs"
+          element={
+            <PublicPage menuOpen={menuOpen} setMenuOpen={setMenuOpen}>
+              <BlogList />
+            </PublicPage>
+          }
+        />
+        <Route
+          path="/blogs/:slug"
+          element={
+            <PublicPage menuOpen={menuOpen} setMenuOpen={setMenuOpen}>
+              <BlogDetail />
+            </PublicPage>
+          }
+        />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin/blogs" element={<AdminBlogs />} />
+          <Route path="/admin/blogs/new" element={<BlogEditor />} />
+          <Route path="/admin/blogs/edit/:id" element={<BlogEditor />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
       <Toaster />
-    </>
+    </BrowserRouter>
   ) : (
     <em id="customMessage">Please Change the ratio to View!</em>
   );

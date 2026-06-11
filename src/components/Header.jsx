@@ -1,4 +1,5 @@
 import { AiOutlineMenu } from "react-icons/ai";
+import { Link } from "react-router-dom";
 import logo from "../assets/briefcase.png";
 
 const Header = ({ setMenuOpen, menuOpen }) => {
@@ -23,37 +24,46 @@ export const HeaderPhone = ({ menuOpen, setMenuOpen }) => {
     );
 };
 
-const NavContent = ({ setMenuOpen }) => (
+const portfolioBase = import.meta.env.BASE_URL || "/";
+
+const NavContent = ({ setMenuOpen }) => {
+    const closeMenu = () => setMenuOpen(false);
+
+    return (
     <>
         <div>
-            <a href="#home" onClick={() => setMenuOpen(false)}>
+            <a href={`${portfolioBase}#home`} onClick={closeMenu}>
                 <img src={logo} alt={"logo"} />
             </a>
         </div>
         <div>
-            <a onClick={() => setMenuOpen(false)} href="#home">
+            <a onClick={closeMenu} href={`${portfolioBase}#home`}>
                 Home
             </a>
-            <a onClick={() => setMenuOpen(false)} href="#work">
+            <a onClick={closeMenu} href={`${portfolioBase}#work`}>
                 Work
             </a>
-            <a onClick={() => setMenuOpen(false)} href="#timeline">
+            <a onClick={closeMenu} href={`${portfolioBase}#timeline`}>
                 Experience
             </a>
-            <a onClick={() => setMenuOpen(false)} href="#services">
+            <a onClick={closeMenu} href={`${portfolioBase}#services`}>
                 Skills
             </a>
-            <a onClick={() => setMenuOpen(false)} href="#testimonial">
+            <a onClick={closeMenu} href={`${portfolioBase}#testimonial`}>
                 Testimonial
             </a>
-            <a onClick={() => setMenuOpen(false)} href="#contact">
+            <a onClick={closeMenu} href={`${portfolioBase}#contact`}>
                 Contact
             </a>
+            <Link onClick={closeMenu} to="/blogs">
+                Blogs
+            </Link>
         </div>
         <a href="mailto:jamuarujjwal@gmail.com">
             <button>Email</button>
         </a>
     </>
-);
+    );
+};
 
 export default Header;
