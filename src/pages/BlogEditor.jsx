@@ -1,10 +1,12 @@
 import MDEditor from "@uiw/react-md-editor";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import { FiUploadCloud } from "react-icons/fi";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
     createBlog,
     getAdminBlogs,
+    uploadBlogImage,
     updateBlog,
 } from "../services/blogService";
 import {
@@ -22,6 +24,7 @@ const BlogEditor = () => {
     const [form, setForm] = useState(emptyBlogForm);
     const [loading, setLoading] = useState(isEdit);
     const [saving, setSaving] = useState(false);
+    const [uploadingImage, setUploadingImage] = useState(false);
 
     const title = useMemo(() => (isEdit ? "Edit Blog" : "New Blog"), [isEdit]);
 
@@ -64,8 +67,39 @@ const BlogEditor = () => {
         }));
     };
 
+    const uploadCoverImage = async (e) => {
+        const file = e.target.files?.[0];
+        e.target.value = "";
+
+        if (!file) return;
+
+        if (!file.type.startsWith("image/")) {
+            toast.error("Please choose an image file");
+            return;
+        }
+
+        setUploadingImage(true);
+
+        try {
+            const url = await uploadBlogImage(file);
+
+            if (!url) {
+                toast.error("Upload succeeded, but no image URL was returned");
+                return;
+            }
+
+            updateField("coverImage", url);
+            toast.success("Cover image uploaded");
+        } catch {
+            // API errors are displayed by the shared response interceptor.
+        } finally {
+            setUploadingImage(false);
+        }
+    };
+
     const submitHandler = async (e) => {
         e.preventDefault();
+        if (uploadingImage) return;
         setSaving(true);
 
         const payload = {
@@ -125,10 +159,33 @@ const BlogEditor = () => {
                         Tags
                         <input value={form.tags} onChange={(e) => updateField("tags", e.target.value)} placeholder="react, node, dsa" />
                     </label>
-                    <label>
-                        Cover Image URL
-                        <input value={form.coverImage} onChange={(e) => updateField("coverImage", e.target.value)} />
-                    </label>
+                    <div className="formField coverImageField">
+                        <span>Cover Image URL</span>
+                        <div className="coverImageControls">
+                            <input
+                                aria-label="Cover Image URL"
+                                value={form.coverImage}
+                                onChange={(e) => updateField("coverImage", e.target.value)}
+                            />
+                            <label className={`imageUploadButton ${uploadingImage ? "disableBtn" : ""}`}>
+                                <FiUploadCloud />
+                                <span>{uploadingImage ? "Uploading..." : "Upload"}</span>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={uploadCoverImage}
+                                    disabled={uploadingImage}
+                                />
+                            </label>
+                        </div>
+                        {form.coverImage && (
+                            <img
+                                className="coverImagePreview"
+                                src={form.coverImage}
+                                alt="Cover preview"
+                            />
+                        )}
+                    </div>
                     <label>
                         Status
                         <select value={form.status} onChange={(e) => updateField("status", e.target.value)}>
@@ -150,7 +207,10 @@ const BlogEditor = () => {
 
                 <div className="editorActions">
                     <Link to="/admin/blogs">Cancel</Link>
-                    <button disabled={saving} className={saving ? "disableBtn" : ""}>
+                    <button
+                        disabled={saving || uploadingImage}
+                        className={saving || uploadingImage ? "disableBtn" : ""}
+                    >
                         {saving ? "Saving..." : "Save Blog"}
                     </button>
                 </div>

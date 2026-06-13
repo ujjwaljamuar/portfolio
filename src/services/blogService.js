@@ -49,3 +49,15 @@ export const updateBlogStatus = async (id, status) => {
     
     return unwrap(response);
 }
+
+export const uploadBlogImage = async (image) => {
+    const formData = new FormData();
+    formData.append("file", image);
+
+    const response = await apiClient.post(
+        "/blogs/admin/blog/upload/image",
+        formData,
+    );
+
+    return response.data?.url || response.data?.data?.url;
+};

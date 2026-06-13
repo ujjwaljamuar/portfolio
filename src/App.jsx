@@ -3,12 +3,11 @@ import Home from "./components/Home";
 import Work from "./components/Work";
 import Timeline from "./components/Timeline";
 import Services from "./components/Services";
-import Testimonial from "./components/Testimonial";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import BlogList from "./pages/BlogList";
 import BlogDetail from "./pages/BlogDetail";
 import AdminLogin from "./pages/AdminLogin";
@@ -18,6 +17,25 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
 
+const ScrollToHash = () => {
+  const { hash, pathname } = useLocation();
+
+  useEffect(() => {
+    if (!hash || pathname !== "/") return;
+
+    const animationFrame = requestAnimationFrame(() => {
+      document.getElementById(hash.slice(1))?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, [hash, pathname]);
+
+  return null;
+};
+
 const PortfolioHome = ({ menuOpen, setMenuOpen, ratio }) => (
   <>
     <HeaderPhone menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
@@ -26,7 +44,6 @@ const PortfolioHome = ({ menuOpen, setMenuOpen, ratio }) => (
     <Work />
     <Timeline />
     <Services />
-    {/* <Testimonial /> */}
     <Contact />
     <Footer />
   </>
@@ -58,6 +75,7 @@ function App() {
 
   return ratio < 2.2 ? (
     <BrowserRouter basename={basename}>
+      <ScrollToHash />
       <Routes>
         <Route
           path="/"

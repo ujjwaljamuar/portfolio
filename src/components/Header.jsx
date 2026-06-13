@@ -24,37 +24,32 @@ export const HeaderPhone = ({ menuOpen, setMenuOpen }) => {
     );
 };
 
-const portfolioBase = import.meta.env.BASE_URL || "/";
-
 const NavContent = ({ setMenuOpen }) => {
     const closeMenu = () => setMenuOpen(false);
 
     return (
     <>
         <div>
-            <a href={`${portfolioBase}#home`} onClick={closeMenu}>
+            <Link to="/#home" onClick={closeMenu}>
                 <img src={logo} alt={"logo"} />
-            </a>
+            </Link>
         </div>
         <div>
-            <a onClick={closeMenu} href={`${portfolioBase}#home`}>
+            <Link onClick={closeMenu} to="/#home">
                 Home
-            </a>
-            <a onClick={closeMenu} href={`${portfolioBase}#work`}>
+            </Link>
+            <Link onClick={closeMenu} to="/#work">
                 Work
-            </a>
-            <a onClick={closeMenu} href={`${portfolioBase}#timeline`}>
+            </Link>
+            <Link onClick={closeMenu} to="/#timeline">
                 Experience
-            </a>
-            <a onClick={closeMenu} href={`${portfolioBase}#services`}>
+            </Link>
+            <Link onClick={closeMenu} to="/#services">
                 Skills
-            </a>
-            <a onClick={closeMenu} href={`${portfolioBase}#testimonial`}>
-                Testimonial
-            </a>
-            <a onClick={closeMenu} href={`${portfolioBase}#contact`}>
+            </Link>
+            <Link onClick={closeMenu} to="/#contact">
                 Contact
-            </a>
+            </Link>
             <Link onClick={closeMenu} to="/blogs">
                 Blogs
             </Link>
