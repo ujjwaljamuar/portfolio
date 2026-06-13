@@ -4,7 +4,7 @@ import App from "./App.jsx";
 import "./styles/app.scss";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
-import "highlight.js/styles/github.css";
+import "highlight.js/styles/github-dark.css";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

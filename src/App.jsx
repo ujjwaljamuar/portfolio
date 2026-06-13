@@ -26,7 +26,7 @@ const PortfolioHome = ({ menuOpen, setMenuOpen, ratio }) => (
     <Work />
     <Timeline />
     <Services />
-    <Testimonial />
+    {/* <Testimonial /> */}
     <Contact />
     <Footer />
   </>

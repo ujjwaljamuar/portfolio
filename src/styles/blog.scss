@@ -243,14 +243,24 @@
         overflow-x: auto;
         padding: 1rem;
         background-color: $color5;
+        color: #f4f4f5;
+        color-scheme: dark;
     }
 
     code {
         font-family: "Consolas", monospace;
     }
 
+    pre code,
+    pre code.hljs {
+        display: block;
+        background-color: transparent;
+        color: inherit;
+    }
+
     :not(pre) > code {
         background-color: $color6_2;
+        color: $color6;
         padding: 0.2rem 0.35rem;
     }
 
