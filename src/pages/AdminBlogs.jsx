@@ -56,6 +56,7 @@ const AdminBlogs = () => {
                     <h1>Blog Dashboard</h1>
                 </div>
                 <div>
+                    <Link to="/admin/dsa">DSA</Link>
                     <Link to="/admin/blogs/new">New Blog</Link>
                     <button onClick={logout}>Logout</button>
                 </div>

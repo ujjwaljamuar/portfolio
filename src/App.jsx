@@ -13,6 +13,9 @@ import BlogDetail from "./pages/BlogDetail";
 import AdminLogin from "./pages/AdminLogin";
 import AdminBlogs from "./pages/AdminBlogs";
 import BlogEditor from "./pages/BlogEditor";
+import AdminDsa from "./pages/AdminDsa";
+import DsaEditor from "./pages/DsaEditor";
+import AdminDsaDetail from "./pages/AdminDsaDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -108,6 +111,10 @@ function App() {
           <Route path="/admin/blogs" element={<AdminBlogs />} />
           <Route path="/admin/blogs/new" element={<BlogEditor />} />
           <Route path="/admin/blogs/edit/:id" element={<BlogEditor />} />
+          <Route path="/admin/dsa" element={<AdminDsa />} />
+          <Route path="/admin/dsa/view/:id" element={<AdminDsaDetail />} />
+          <Route path="/admin/dsa/new" element={<DsaEditor />} />
+          <Route path="/admin/dsa/edit/:id" element={<DsaEditor />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
