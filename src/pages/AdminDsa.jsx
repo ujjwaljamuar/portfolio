@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import toast from "react-hot-toast";
+import { FiExternalLink } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { ADMIN_AUTH_KEY } from "../services/apiClient";
 import {
@@ -30,9 +31,6 @@ const statLabels = [
     { key: "hard", label: "Hard", color: "#292b46" },
 ];
 
-const completionStats = statLabels.filter((item) =>
-    ["solved", "todo", "revision"].includes(item.key),
-);
 const difficultyStats = statLabels.filter((item) =>
     ["easy", "medium", "hard"].includes(item.key),
 );
@@ -114,111 +112,67 @@ const AdminDsa = () => {
         return Array.from(tagSet).sort((a, b) => a.localeCompare(b));
     }, [problems]);
 
-    const chartStats = useMemo(() => {
+    const overviewStats = useMemo(() => {
         const total = getStatValue(stats, statLabels[0]) || problems.length;
+        const solved = getStatValue(stats, statLabels[1]);
+        const todo = getStatValue(stats, statLabels[2]);
+        const revision = getStatValue(stats, statLabels[3]);
+        const difficultyBreakdown = difficultyStats.map((item) => {
+            const totalForDifficulty = getStatValue(stats, item);
+            const solvedForDifficulty = problems.filter((problem) => {
+                const difficulty = coerceOption(problem.difficulty, DSA_DIFFICULTIES, "");
+                const status = coerceOption(problem.status, DSA_STATUSES, "");
 
-        return {
-            total,
-            completion: completionStats.map((item) => {
-                const value = getStatValue(stats, item);
+                return difficulty.toLowerCase() === item.label.toLowerCase() && status === "Solved";
+            }).length;
 
-                return {
-                    ...item,
-                    value,
-                    percent: toPercent(value, total),
-                };
-            }),
-            difficulty: difficultyStats.map((item) => {
-                const value = getStatValue(stats, item);
-
-                return {
-                    ...item,
-                    value,
-                    percent: toPercent(value, total),
-                };
-            }),
-        };
-    }, [problems.length, stats]);
-
-    const createGaugeOption = (title, items) => ({
-            backgroundColor: "transparent",
-            color: items.map((item) => item.color),
-            tooltip: {
-                trigger: "item",
-                formatter: ({ seriesName, value }) => `${seriesName}: ${value}%`,
-            },
-            graphic: [
-                {
-                    type: "text",
-                    left: "center",
-                    top: "42%",
-                    style: {
-                        text: title,
-                        fill: "#16161698",
-                        font: "700 15px Roboto",
-                        textAlign: "center",
-                    },
-                },
-                {
-                    type: "text",
-                    left: "center",
-                    top: "50%",
-                    style: {
-                        text: String(chartStats.total),
-                        fill: "#161616",
-                        font: "900 34px Roboto",
-                        textAlign: "center",
-                    },
-                },
-            ],
-            series: items.map((item, index) => {
-                const radius = 82 - index * 13;
-
-                return {
-                    name: item.label,
-                    type: "gauge",
-                    center: ["50%", "50%"],
-                    radius: `${radius}%`,
-                    startAngle: 90,
-                    endAngle: -270,
-                    min: 0,
-                    max: 100,
-                    pointer: { show: false },
-                    progress: {
-                        show: true,
-                        roundCap: true,
-                        width: 9,
-                        itemStyle: {
-                            color: item.color,
-                        },
-                    },
-                    axisLine: {
-                        roundCap: true,
-                        lineStyle: {
-                            width: 9,
-                            color: [[1, "#ede8f8"]],
-                        },
-                    },
-                    axisTick: { show: false },
-                    splitLine: { show: false },
-                    axisLabel: { show: false },
-                    anchor: { show: false },
-                    title: { show: false },
-                    detail: { show: false },
-                    data: [{ value: item.percent }],
-                };
-            }),
+            return {
+                ...item,
+                total: totalForDifficulty,
+                solved: solvedForDifficulty,
+                percent: toPercent(totalForDifficulty, total),
+            };
         });
 
-    const completionGaugeOption = useMemo(
-        () => createGaugeOption("Completion", chartStats.completion),
-        [chartStats],
-    );
+        return { total, solved, todo, revision, difficultyBreakdown };
+    }, [problems, stats]);
 
-    const difficultyGaugeOption = useMemo(
-        () => createGaugeOption("Difficulty", chartStats.difficulty),
-        [chartStats],
-    );
+    const overviewGaugeOption = useMemo(() => {
+        const hasDifficultyData = overviewStats.difficultyBreakdown.some((item) => item.total > 0);
+        const data = hasDifficultyData
+            ? overviewStats.difficultyBreakdown.map((item) => ({
+                name: item.label,
+                value: item.total,
+                itemStyle: { color: item.color },
+            }))
+            : [{ name: "No data", value: 1, itemStyle: { color: "#ede8f8" } }];
+
+        return {
+            backgroundColor: "transparent",
+            tooltip: {
+                trigger: "item",
+                formatter: ({ name, value }) => `${name}: ${value}`,
+            },
+            series: [
+                {
+                    name: "Difficulty",
+                    type: "pie",
+                    radius: ["72%", "88%"],
+                    center: ["50%", "50%"],
+                    avoidLabelOverlap: true,
+                    silent: !hasDifficultyData,
+                    label: { show: false },
+                    labelLine: { show: false },
+                    itemStyle: {
+                        borderColor: "#ffffff",
+                        borderRadius: 10,
+                        borderWidth: 5,
+                    },
+                    data,
+                },
+            ],
+        };
+    }, [overviewStats]);
 
     const filteredProblems = useMemo(
         () =>
@@ -280,60 +234,35 @@ const AdminDsa = () => {
                 </div>
             </header>
 
-            <section className="adminStatsGaugeGrid">
-                <article className="adminStatsGauge adminPanel">
-                    <header>
-                        <p>Progress</p>
-                        <strong>{chartStats.total} Total</strong>
-                    </header>
-                    <div className="statsGaugeChart">
-                        <ReactECharts
-                            option={completionGaugeOption}
-                            notMerge
-                            lazyUpdate
-                            style={{ height: "250px", width: "100%" }}
-                        />
+            <section className="dsaOverviewCard adminPanel">
+                <div className="dsaOverviewSummary">
+                    <p>Overview</p>
+                    <strong>{overviewStats.solved}<span>/{overviewStats.total}</span></strong>
+                    <small>Solved problems</small>
+                    <div>
+                        <span>{overviewStats.todo} Todo</span>
+                        <span>{overviewStats.revision} Revision</span>
                     </div>
-                    <div className="statsGaugeLegend">
-                        {chartStats.completion.map((item) => (
-                            <article key={item.key}>
-                                <span style={{ "--stat-color": item.color }} />
-                                <div>
-                                    <p>{item.label}</p>
-                                    <strong>{item.value}</strong>
-                                </div>
-                                <em>{item.percent}%</em>
-                            </article>
-                        ))}
-                    </div>
-                </article>
+                </div>
 
-                <article className="adminStatsGauge adminPanel">
-                    <header>
-                        <p>Difficulty</p>
-                        <strong>{chartStats.total} Total</strong>
-                    </header>
-                    <div className="statsGaugeChart">
-                        <ReactECharts
-                            option={difficultyGaugeOption}
-                            notMerge
-                            lazyUpdate
-                            style={{ height: "250px", width: "100%" }}
-                        />
-                    </div>
-                    <div className="statsGaugeLegend">
-                        {chartStats.difficulty.map((item) => (
-                            <article key={item.key}>
-                                <span style={{ "--stat-color": item.color }} />
-                                <div>
-                                    <p>{item.label}</p>
-                                    <strong>{item.value}</strong>
-                                </div>
-                                <em>{item.percent}%</em>
-                            </article>
-                        ))}
-                    </div>
-                </article>
+                <div className="dsaOverviewGauge">
+                    <ReactECharts
+                        option={overviewGaugeOption}
+                        notMerge
+                        lazyUpdate
+                        style={{ height: "180px", width: "100%" }}
+                    />
+                </div>
+
+                <div className="dsaOverviewDifficulty">
+                    {overviewStats.difficultyBreakdown.map((item) => (
+                        <article key={item.key} style={{ "--stat-color": item.color }}>
+                            <p>{item.label}</p>
+                            <strong>{item.solved}/{item.total}</strong>
+                            <span>{item.percent}% of total</span>
+                        </article>
+                    ))}
+                </div>
             </section>
 
             <section className="adminPanel dsaControls">
@@ -418,7 +347,22 @@ const AdminDsa = () => {
 
                                     return (
                                         <tr key={id}>
-                                            <td>{problem.title}</td>
+                                            <td>
+                                                <div className="problemTitleCell">
+                                                    <span>{problem.title}</span>
+                                                    {problem.problemUrl && (
+                                                        <a
+                                                            href={problem.problemUrl}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            aria-label={`Open ${problem.title} problem`}
+                                                        >
+                                                            <FiExternalLink />
+                                                            Problem
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            </td>
                                             <td>{problem.platform || "Not available"}</td>
                                             <td>
                                                 <span data-difficulty={difficulty}>

@@ -231,6 +231,103 @@
     padding: 1.5rem;
 }
 
+.dsaOverviewCard {
+    align-items: center;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: minmax(180px, 0.7fr) minmax(190px, 0.8fr) minmax(320px, 1.5fr);
+    margin-bottom: 1.5rem;
+    min-height: 220px;
+}
+
+.dsaOverviewSummary {
+    border-right: 1px solid $color6_2;
+    min-width: 0;
+    padding-right: 1.5rem;
+
+    > p {
+        color: $color3;
+        font: 800 0.8rem $text1;
+        letter-spacing: 1.5px;
+        margin-bottom: 0.75rem;
+        text-transform: uppercase;
+    }
+
+    > strong {
+        color: $color6;
+        display: block;
+        font: 900 3.4rem $text1;
+        line-height: 1;
+    }
+
+    > strong span {
+        color: $color6_1;
+        font-size: 1.35rem;
+        margin-left: 0.25rem;
+    }
+
+    > small {
+        color: $color2;
+        display: block;
+        font: 800 0.9rem $text1;
+        margin-top: 0.55rem;
+        text-transform: uppercase;
+    }
+
+    > div {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1.1rem;
+    }
+
+    > div span {
+        border: 1px solid $color6_2;
+        color: $color6_1;
+        font: 800 0.75rem $text1;
+        padding: 0.45rem 0.65rem;
+        text-transform: uppercase;
+    }
+}
+
+.dsaOverviewGauge {
+    min-width: 0;
+}
+
+.dsaOverviewDifficulty {
+    display: grid;
+    gap: 0.6rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    article {
+        background-color: rgba(128, 90, 213, 0.06);
+        border-left: 4px solid var(--stat-color);
+        min-width: 0;
+        padding: 1rem;
+    }
+
+    p {
+        color: var(--stat-color);
+        font: 900 0.75rem $text1;
+        margin-bottom: 0.25rem;
+        text-transform: uppercase;
+    }
+
+    strong {
+        color: $color6;
+        display: block;
+        font: 900 1.6rem $text1;
+        line-height: 1.1;
+    }
+
+    span {
+        color: $color6_1;
+        display: block;
+        font: 700 0.75rem $text1;
+        margin-top: 0.35rem;
+    }
+}
+
 .adminTableWrap {
     width: 100%;
     overflow-x: auto;
@@ -384,6 +481,32 @@
     font: 700 0.75rem $text1;
     padding: 0.55rem 0.75rem;
     text-transform: uppercase;
+}
+
+.problemTitleCell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    > span {
+        color: $color6;
+        font-weight: 800;
+    }
+
+    > a {
+        align-items: center;
+        color: $color3;
+        display: inline-flex;
+        font: 800 0.72rem $text1;
+        gap: 0.3rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        width: max-content;
+
+        &:hover {
+            color: $color3_1;
+        }
+    }
 }
 
 .dsaDetail {
@@ -739,12 +862,20 @@
     .adminStatsGaugeGrid,
     .adminStatsGauge,
     .adminStatsGrid,
+    .dsaOverviewCard,
+    .dsaOverviewDifficulty,
     .dsaControls {
         grid-template-columns: 1fr;
     }
 
     .dsaDashboardPage .adminTable {
         table-layout: auto;
+    }
+
+    .dsaOverviewSummary {
+        border-right: none;
+        border-bottom: 1px solid $color6_2;
+        padding: 0 0 1rem;
     }
 
     .adminStatsGauge {
