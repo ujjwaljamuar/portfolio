@@ -123,10 +123,7 @@ const DsaEditor = () => {
     const removeApproach = (index) => {
         setForm((current) => ({
             ...current,
-            approaches:
-                current.approaches.length === 1
-                    ? [{ ...emptyApproach }]
-                    : current.approaches.filter((_, currentIndex) => currentIndex !== index),
+            approaches: current.approaches.filter((_, currentIndex) => currentIndex !== index),
         }));
     };
 
@@ -179,7 +176,7 @@ const DsaEditor = () => {
             problemUrl: form.problemUrl.trim(),
             difficulty: form.difficulty,
             tags: textToTags(form.tags),
-            status: form.status,
+            status: coerceOption(form.status, DSA_STATUSES, "Todo"),
             question: form.question,
             approaches: form.approaches.map((approach) => ({
                 title: approach.title.trim(),
@@ -290,6 +287,12 @@ const DsaEditor = () => {
                             Add Approach
                         </button>
                     </div>
+
+                    {form.approaches.length === 0 && (
+                        <p className="optionalSectionNote">
+                            No approaches added. You can save the problem without one.
+                        </p>
+                    )}
 
                     {form.approaches.map((approach, index) => (
                         <article className="approachItem" key={index}>

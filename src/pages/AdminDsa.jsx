@@ -23,9 +23,9 @@ import {
 
 const statLabels = [
     { key: "total", label: "Total", color: "#805ad5" },
-    { key: "solved", label: "Solved", color: "#286f6c" },
-    { key: "todo", label: "Todo", color: "#805ad5" },
-    { key: "revision", label: "Revision", color: "#292b46" },
+    { key: "Solved", label: "Solved", color: "#286f6c" },
+    { key: "Todo", label: "Todo", color: "#805ad5" },
+    { key: "Revision", label: "Revision", color: "#292b46" },
     { key: "easy", label: "Easy", color: "#47a37f" },
     { key: "medium", label: "Medium", color: "#a879e6" },
     { key: "hard", label: "Hard", color: "#292b46" },
@@ -209,8 +209,10 @@ const AdminDsa = () => {
     };
 
     const handleStatus = async (id, status) => {
-        await updateStatus(id, status);
-        toast.success(`Problem marked ${status}`);
+        const nextStatus = coerceOption(status, DSA_STATUSES, "Todo");
+
+        await updateStatus(id, nextStatus);
+        toast.success(`Problem marked ${nextStatus}`);
         loadDashboard();
     };
 

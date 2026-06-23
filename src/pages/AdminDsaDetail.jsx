@@ -112,7 +112,9 @@ const AdminDsaDetail = () => {
 
                 <section className="dsaReadApproaches">
                     <h2>Approaches</h2>
-                    {approaches.map((approach, index) => (
+                    {approaches.length === 0 ? (
+                        <p className="optionalSectionNote">No approaches added yet.</p>
+                    ) : approaches.map((approach, index) => (
                         <article className="adminPanel dsaReadSection" key={index}>
                             <h3>{approach.title || `Approach ${index + 1}`}</h3>
                             <h4>Intuition</h4>

@@ -755,6 +755,14 @@
     gap: 1rem;
 }
 
+.optionalSectionNote {
+    background-color: $color4;
+    border: 1px dashed $color6_2;
+    color: $color6_1;
+    font: 700 0.95rem $text2;
+    padding: 1rem;
+}
+
 .sectionTitleRow {
     background-color: $color4;
     border: 1px solid $color6_2;

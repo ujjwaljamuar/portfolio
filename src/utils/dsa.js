@@ -1,5 +1,5 @@
 export const DSA_DIFFICULTIES = ["Easy", "Medium", "Hard"];
-export const DSA_STATUSES = ["todo", "solved", "revision"];
+export const DSA_STATUSES = ["Todo", "Solved", "Revision"];
 
 export const emptyApproach = {
     title: "",
@@ -16,7 +16,7 @@ export const emptyDsaForm = {
     tags: "",
     status: "Todo",
     question: "",
-    approaches: [{ ...emptyApproach }],
+    approaches: [],
     notes: "",
 };
 
@@ -53,7 +53,7 @@ export const textToTags = (tags) =>
         .filter(Boolean);
 
 export const normalizeApproaches = (approaches) => {
-    if (!Array.isArray(approaches) || approaches.length === 0) return [{ ...emptyApproach }];
+    if (!Array.isArray(approaches) || approaches.length === 0) return [];
 
     return approaches.map((item) => ({
         title: item.title || item.approachTitle || "",
