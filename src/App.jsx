@@ -7,7 +7,13 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import BlogList from "./pages/BlogList";
 import BlogDetail from "./pages/BlogDetail";
 import AdminLogin from "./pages/AdminLogin";
