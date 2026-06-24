@@ -295,6 +295,37 @@
 
 .dsaOverviewGauge {
   min-width: 0;
+  position: relative;
+}
+
+.dsaOverviewCenter {
+  color: $color6;
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  strong {
+    display: block;
+    font: 900 2rem $text1;
+    line-height: 1;
+  }
+
+  span {
+    color: $color6_1;
+    font-size: 0.95rem;
+    margin-left: 0.2rem;
+  }
+
+  p {
+    color: $color2;
+    font: 800 0.72rem $text1;
+    margin-top: 0.35rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
 }
 
 .dsaOverviewDifficulty {

@@ -27,8 +27,8 @@ const statLabels = [
   { key: "Todo", label: "Todo", color: "#805ad5" },
   { key: "Revision", label: "Revision", color: "#292b46" },
   { key: "easy", label: "Easy", color: "#47a37f" },
-  { key: "medium", label: "Medium", color: "#a879e6" },
-  { key: "hard", label: "Hard", color: "#292b46" },
+  { key: "medium", label: "Medium", color: "#d9a21b" },
+  { key: "hard", label: "Hard", color: "#d64545" },
 ];
 
 const difficultyStats = statLabels.filter((item) =>
@@ -118,13 +118,21 @@ const AdminDsa = () => {
   }, [problems]);
 
   const overviewStats = useMemo(() => {
-    const total = getStatValue(stats, statLabels[0]) || problems.length;
-    const solved = getStatValue(stats, statLabels[1]);
+    const solvedOutOfTotal = stats?.solvedOutOfTotal || {};
+    const total =
+      Number(solvedOutOfTotal.total ?? getStatValue(stats, statLabels[0])) ||
+      problems.length;
+    const solved = Number(
+      solvedOutOfTotal.solved ?? getStatValue(stats, statLabels[1]),
+    );
     const todo = getStatValue(stats, statLabels[2]);
     const revision = getStatValue(stats, statLabels[3]);
     const difficultyBreakdown = difficultyStats.map((item) => {
-      const totalForDifficulty = getStatValue(stats, item);
-      const solvedForDifficulty = problems.filter((problem) => {
+      const apiDifficulty = stats?.byDifficulty?.[item.key] || {};
+      const totalForDifficulty = Number(
+        apiDifficulty.total ?? getStatValue(stats, item),
+      );
+      const solvedFallback = problems.filter((problem) => {
         const difficulty = coerceOption(
           problem.difficulty,
           DSA_DIFFICULTIES,
@@ -137,6 +145,9 @@ const AdminDsa = () => {
           status === "Solved"
         );
       }).length;
+      const solvedForDifficulty = Number(
+        apiDifficulty.solved ?? solvedFallback,
+      );
 
       return {
         ...item,
@@ -146,7 +157,14 @@ const AdminDsa = () => {
       };
     });
 
-    return { total, solved, todo, revision, difficultyBreakdown };
+    return {
+      total,
+      solved,
+      todo,
+      revision,
+      solvedPercent: toPercent(solved, total),
+      difficultyBreakdown,
+    };
   }, [problems, stats]);
 
   const overviewGaugeOption = useMemo(() => {
@@ -165,7 +183,8 @@ const AdminDsa = () => {
       backgroundColor: "transparent",
       tooltip: {
         trigger: "item",
-        formatter: ({ name, value }) => `${name}: ${value}`,
+        formatter: ({ name, value }) =>
+          `${name}: ${value}<br/>Solved: ${overviewStats.solvedPercent}%`,
       },
       series: [
         {
@@ -255,12 +274,10 @@ const AdminDsa = () => {
       <section className="dsaOverviewCard adminPanel">
         <div className="dsaOverviewSummary">
           <p>Overview</p>
-          <strong>
-            {overviewStats.solved}
-            <span>/{overviewStats.total}</span>
-          </strong>
-          <small>Solved problems</small>
+          <strong>{overviewStats.total}</strong>
+          <small>Total problems</small>
           <div>
+            <span>{overviewStats.solved} Solved</span>
             <span>{overviewStats.todo} Todo</span>
             <span>{overviewStats.revision} Revision</span>
           </div>
@@ -273,6 +290,13 @@ const AdminDsa = () => {
             lazyUpdate
             style={{ height: "180px", width: "100%" }}
           />
+          <div className="dsaOverviewCenter">
+            <strong>
+              {overviewStats.solved}
+              <span>/{overviewStats.total}</span>
+            </strong>
+            <p>{overviewStats.solvedPercent}% solved</p>
+          </div>
         </div>
 
         <div className="dsaOverviewDifficulty">
