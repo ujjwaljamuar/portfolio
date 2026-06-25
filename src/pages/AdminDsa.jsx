@@ -168,16 +168,18 @@ const AdminDsa = () => {
   }, [problems, stats]);
 
   const overviewGaugeOption = useMemo(() => {
-    const hasDifficultyData = overviewStats.difficultyBreakdown.some(
-      (item) => item.total > 0,
-    );
-    const data = hasDifficultyData
-      ? overviewStats.difficultyBreakdown.map((item) => ({
-          name: item.label,
-          value: item.total,
-          itemStyle: { color: item.color },
-        }))
-      : [{ name: "No data", value: 1, itemStyle: { color: "#ede8f8" } }];
+    const difficultyData = overviewStats.difficultyBreakdown
+      .filter((item) => item.total > 0)
+      .map((item) => ({
+        name: item.label,
+        value: item.total,
+        itemStyle: { color: item.color },
+      }));
+
+    const data =
+      difficultyData.length > 0
+        ? difficultyData
+        : [{ name: "No data", value: 1, itemStyle: { color: "#ede8f8" } }];
 
     return {
       backgroundColor: "transparent",
@@ -190,16 +192,18 @@ const AdminDsa = () => {
         {
           name: "Difficulty",
           type: "pie",
-          radius: ["72%", "88%"],
+          radius: ["66%", "78%"],
           center: ["50%", "50%"],
+          startAngle: 90,
           avoidLabelOverlap: true,
-          silent: !hasDifficultyData,
+          stillShowZeroSum: false,
           label: { show: false },
           labelLine: { show: false },
           itemStyle: {
-            borderColor: "#ffffff",
-            borderRadius: 10,
-            borderWidth: 5,
+            borderWidth: 0,
+          },
+          emphasis: {
+            scale: false,
           },
           data,
         },

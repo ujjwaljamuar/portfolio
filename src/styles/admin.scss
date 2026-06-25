@@ -755,6 +755,25 @@
   .w-md-editor {
     box-shadow: none;
   }
+
+  .w-md-editor-text-pre,
+  .w-md-editor-text-input,
+  .w-md-editor-text-pre > code {
+    font-family:
+      "Consolas", "Liberation Mono", "Courier New", monospace !important;
+    font-size: 15px !important;
+    font-variant-ligatures: none;
+    letter-spacing: 0;
+    line-height: 1.45 !important;
+    tab-size: 2;
+    white-space: pre-wrap !important;
+    word-break: normal;
+  }
+
+  .w-md-editor-text-input,
+  .w-md-editor-text-pre {
+    padding: 12px 14px !important;
+  }
 }
 
 .dsaMarkdownField {
