@@ -1,13 +1,26 @@
 {
   "projects": [
     {
-      "date": "05/03/2024",
-      "title": "CODE DEPLOYER",
-      "description": "Built a project using NodeJS, TypeScript, AWS S3 and Redis that automates the process of cloning, building and deploying a react project on machine.",
-      "url": "https://github.com/ujjwaljamuar/code-deployer-aws-cloudflare",
-      "imgSrc": "https://cdn.pixabay.com/photo/2019/09/09/08/23/internet-4463031_1280.jpg"
+      "date": "27/10/2026",
+      "title": "AI-Assisted Security Event Detection Platform",
+      "description": "Built a security event processing platform using Python and Kafka/Kinesis, combining deterministic detection rules, risk scoring, and LLM-assisted alert summaries. Designed for secure log handling, role-based access control, auditability, and observable performance under load.",
+      "url": "https://github.com/ujjwaljamuar/Ai-Security-Event-Platflorm",
+      "imgSrc": "https://res.cloudinary.com/dgoardsdr/image/upload/f_webp/AI-Assisted_Security_Event_Detection_Platform_sb8tl6.png"
     },
-
+    {
+      "date": "05/05/2026",
+      "title": "Secure RAG System",
+      "description": "Developed a secure AI-powered document retrieval system using Python, OpenAI APIs, and sentence-transformers featuring vector search, semantic chunking, role-based access control (RBAC), audit logging, metadata-aware retrieval, and secure context generation for LLM apps.",
+      "url": "https://github.com/ujjwaljamuar/secure-rbac-context-rag",
+      "imgSrc": "https://res.cloudinary.com/dgoardsdr/image/upload/Secure_RAG_System_Infographic_zdqklp.png"
+    },
+    {
+      "date": "29/04/2026",
+      "title": "Distributed API Gateway",
+      "description": "Built a containerized distributed API gateway with TypeScript-Express, Redis, featuring JWT auth, request routing, proxy forwarding, and round-robin load balancing, token bucket rate limiter using Lua for atomic updates across stateless instances, with monitoring and load testing",
+      "url": "https://github.com/ujjwaljamuar/distributed-rate-limiter",
+      "imgSrc": "https://res.cloudinary.com/dgoardsdr/image/upload/Distributed_API_Gateway_Architecture_yieqng.png"
+    },
     {
       "date": "08/03/2024",
       "title": "COURSE HUB",
@@ -22,21 +35,6 @@
       "description": "Deployed robust application on AWS EC2 using Docker, Jenkins, SonarQube, Trivy FS, Prometheus, Grafana, Owasp dependency check, Kubernetes and ArgoCD for efficient resource management, CI/CD, Code Quality, System Monitoring and Visualization, Application security and High Availability.",
       "url": "https://github.com/ujjwaljamuar/DevSecOps-Project",
       "imgSrc": "https://cdn.pixabay.com/photo/2015/05/25/05/27/network-782707_1280.png"
-    },
-    {
-      "date": "15/10/2022",
-      "title": "CRYPTON",
-      "description": "Crypto currency real time information provider app using ReactJS, shows top 100 coin exchanges, market value in three currencies, built-in graph and lot more.",
-      "url": "https://crypto-react-web-app-ujjwaljamuar.vercel.app",
-      "imgSrc": "https://cdn.pixabay.com/photo/2017/12/12/12/44/bitcoin-3014614_960_720.jpg"
-    },
-
-    {
-      "date": "17/10/2022",
-      "title": "CART",
-      "description": "A simple demonstration of cart in an E Commerce Website, can add, delete, update products and purchase Item.",
-      "url": "https://react-cart-ujjwaljamuar.vercel.app",
-      "imgSrc": "https://cdn.pixabay.com/photo/2019/12/14/08/36/shopping-4694470_960_720.jpg"
     }
   ]
 }

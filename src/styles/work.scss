@@ -28,7 +28,7 @@
     }
 
     .workItem {
-      overflow-y: auto;
+      overflow: hidden;
       height: 25vmax;
       width: 95%;
       margin: auto;
@@ -40,7 +40,9 @@
       > img {
         border-radius: 20px;
         width: 40%;
-        object-fit: cover;
+        height: 100%;
+        min-width: 0;
+        object-fit: contain;
       }
 
       > aside {
