@@ -25,6 +25,11 @@
     > article {
       width: 85%;
       height: 25vmax;
+      .carousel,
+      .slider-wrapper,
+      .slider {
+        height: 100%;
+      }
     }
 
     .workItem {
