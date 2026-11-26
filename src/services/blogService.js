@@ -18,7 +18,9 @@ export const getBlogBySlug = async (slug) => {
 };
 
 export const getAdminBlogBySlug = async (slug) => {
-  const response = await apiClient.get(`/blogs/${encodeURIComponent(slug)}`);
+  const response = await apiClient.get(
+    `/blogs/admin/${encodeURIComponent(slug)}`,
+  );
   return unwrap(response);
 };
 
